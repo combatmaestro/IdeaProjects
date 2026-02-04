@@ -124,16 +124,14 @@ button {
   inset: 0;
   z-index: 3;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  text-align: center;
 }
 
 .yes-bg {
   position: absolute;
   inset: 0;
-  background: url("your-photo.jpg") center/cover no-repeat;
+  background: url("https://images.pexels.com/photos/33440262/pexels-photo-33440262.jpeg") center/cover no-repeat;
   filter: blur(8px);
   transform: scale(1.1);
 }
@@ -142,25 +140,29 @@ button {
   position: relative;
   z-index: 2;
   color: #fff;
+  text-align: center;
 }
 
 .yes-content h1 {
   font-size: 3.5rem;
-}
-
-.yes-photo {
-  margin-top: 20px;
-  width: 260px;
-  border-radius: 16px;
-  filter: blur(4px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
 </style>
 </head>
 
 <body>
 
-<!-- floating hearts (never removed) -->
+<!-- SoundCloud hidden player -->
+<iframe
+  id="bg-music"
+  width="0"
+  height="0"
+  scrolling="no"
+  frameborder="no"
+  allow="autoplay"
+  src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/500195163&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false">
+</iframe>
+
+<!-- floating hearts -->
 <div class="hearts" id="hearts"></div>
 
 <!-- main proposal -->
@@ -194,7 +196,22 @@ setInterval(() => {
   h.style.animationDuration = 4 + Math.random() * 3 + "s";
   hearts.appendChild(h);
   setTimeout(() => h.remove(), 7000);
-}, 120); // high frequency
+}, 120);
+
+/* SoundCloud autoplay after interaction */
+const player = document.getElementById("scPlayer");
+let musicStarted = false;
+
+function startMusic() {
+  if (musicStarted) return;
+  player.src += "&auto_play=true";
+  musicStarted = true;
+  document.removeEventListener("click", startMusic);
+  document.removeEventListener("mousemove", startMusic);
+}
+
+document.addEventListener("click", startMusic);
+document.addEventListener("mousemove", startMusic);
 
 /* NO button logic */
 const noBtn = document.getElementById("noBtn");
@@ -251,7 +268,6 @@ yesBtn.onclick = () => {
     <div class="yes-bg"></div>
     <div class="yes-content">
       <h1>She said YES ❤️</h1>
-      <img src="https://images.pexels.com/photos/33440262/pexels-photo-33440262.jpeg" class="yes-photo" alt="Us">
     </div>
   `;
   document.body.appendChild(yesScreen);

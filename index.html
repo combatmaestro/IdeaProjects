@@ -1,152 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Will You Marry Me? 💍</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Marry Me ❤️</title>
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      font-family: "Segoe UI", Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
 
-      /* Decent romantic background */
-      background: linear-gradient(
-        135deg,
-        #f6f1eb,
-        #f2d7d9
-      );
-    }
+html, body {
+  height: 100%;
+  overflow: hidden;
+}
 
-    .popup {
-      background: #ffffff;
-      padding: 40px 36px;
-      border-radius: 18px;
-      text-align: center;
-      width: 360px;
-      position: relative;
-      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-    }
+body {
+  background: linear-gradient(135deg, #ffd6e0, #fff1f5);
+  position: relative;
+}
 
-    h1 {
-      color: #c44569;
-      margin-bottom: 12px;
-    }
+/* Floating hearts */
+.hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
 
-    #message {
-      font-size: 15.5px;
-      color: #444;
-      min-height: 48px;
-      margin-top: 10px;
-    }
+.heart {
+  position: absolute;
+  bottom: -20px;
+  font-size: 18px;
+  animation: floatUp linear forwards;
+  opacity: 0.8;
+}
 
-    .buttons {
-      margin-top: 32px;
-      position: relative;
-      height: 80px;
-    }
+@keyframes floatUp {
+  to {
+    transform: translateY(-110vh);
+    opacity: 0;
+  }
+}
 
-    button {
-      padding: 12px 26px;
-      font-size: 15px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: transform 0.15s ease;
-    }
+/* Main content */
+#mainContent {
+  position: relative;
+  z-index: 2;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
 
-    #yes {
-      background: linear-gradient(135deg, #4caf50, #2e7d32);
-      color: white;
-    }
+h1 {
+  font-size: 3.2rem;
+  color: #c9184a;
+}
 
-    #yes:hover {
-      transform: scale(1.05);
-    }
+p {
+  margin-top: 20px;
+  font-size: 1.3rem;
+  color: #6d6875;
+  max-width: 600px;
+}
 
-    #no {
-      background: linear-gradient(135deg, #e57373, #c62828);
-      color: white;
-      position: absolute;
-      left: 220px;
-      top: 20px;
-    }
-  </style>
+.message {
+  margin-top: 15px;
+  font-size: 1.2rem;
+  color: #b5179e;
+  min-height: 1.4em;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.message.show {
+  opacity: 1;
+}
+
+.buttons {
+  position: relative;
+  width: 320px;
+  height: 140px;
+  margin-top: 40px;
+}
+
+button {
+  padding: 14px 30px;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  border: none;
+  position: absolute;
+}
+
+#yesBtn {
+  left: 0;
+  background: #ff4d6d;
+  color: white;
+}
+
+#yesBtn:hover {
+  transform: scale(1.05);
+}
+
+#noBtn {
+  right: 0;
+  background: transparent;
+  border: 2px solid #ff4d6d;
+  color: #ff4d6d;
+  white-space: nowrap;
+}
+
+/* YES screen */
+.yes-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.yes-bg {
+  position: absolute;
+  inset: 0;
+  background: url("your-photo.jpg") center/cover no-repeat;
+  filter: blur(8px);
+  transform: scale(1.1);
+}
+
+.yes-content {
+  position: relative;
+  z-index: 2;
+  color: #fff;
+}
+
+.yes-content h1 {
+  font-size: 3.5rem;
+}
+
+.yes-photo {
+  margin-top: 20px;
+  width: 260px;
+  border-radius: 16px;
+  filter: blur(4px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+</style>
 </head>
 
 <body>
 
-  <div class="popup">
-    <h1>Will you marry me? 💍</h1>
+<!-- floating hearts (never removed) -->
+<div class="hearts" id="hearts"></div>
 
-    <p id="message">
-      I promise to love you, respect you, and stand by you forever ❤️
-    </p>
+<!-- main proposal -->
+<div id="mainContent">
+  <h1>Dhusu, will you marry me? ❤️</h1>
 
-    <div class="buttons">
-      <button id="yes">YES ❤️</button>
-      <button id="no">NO 🙈</button>
-    </div>
+  <p>
+    From the moment you walked into my life, everything felt right.
+    I don’t want a future without you in it.
+  </p>
+
+  <div class="message" id="message">
+    Go on… try clicking No 😉
   </div>
 
-  <script>
-    const noBtn = document.getElementById("no");
-    const yesBtn = document.getElementById("yes");
-    const message = document.getElementById("message");
-    const container = document.querySelector(".buttons");
+  <div class="buttons" id="area">
+    <button id="yesBtn">Yes 💍</button>
+    <button id="noBtn">No 🙈</button>
+  </div>
+</div>
 
-    const messages = [
-      "Hey… at least think about it 😅",
-      "Are you sure? I make great coffee ☕",
-      "That answer is not allowed 😌",
-      "I’ll do the dishes. Forever.",
-      "I’ll let you win all arguments 😄",
-      "You know this is destiny ❤️"
-    ];
+<script>
+/* floating hearts */
+const hearts = document.getElementById("hearts");
+setInterval(() => {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.textContent = "❤️";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.fontSize = 14 + Math.random() * 18 + "px";
+  h.style.animationDuration = 4 + Math.random() * 3 + "s";
+  hearts.appendChild(h);
+  setTimeout(() => h.remove(), 7000);
+}, 120); // high frequency
 
-    let attempt = 0;
+/* NO button logic */
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const area = document.getElementById("area");
+const msg = document.getElementById("message");
 
-    function moveNoButton() {
-      const containerRect = container.getBoundingClientRect();
-      const btnRect = noBtn.getBoundingClientRect();
+const messages = [
+  "Hey… think again 😅",
+  "That option is broken 😌",
+  "Are you sure? 💖",
+  "Nice try 😉",
+  "Destiny says YES ❤️",
+  "You’re smiling already 😄",
+  "Forever looks good on us 💍",
+  "Stop teasing, say YES 😍"
+];
 
-      const maxX = containerRect.width - btnRect.width;
-      const maxY = containerRect.height - btnRect.height;
+let i = 0;
 
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+function moveNo() {
+  const maxX = area.clientWidth - noBtn.offsetWidth;
+  const maxY = area.clientHeight - noBtn.offsetHeight;
+  noBtn.style.left = Math.random() * maxX + "px";
+  noBtn.style.top = Math.random() * maxY + "px";
 
-      noBtn.style.left = `${x}px`;
-      noBtn.style.top = `${y}px`;
+  const text = messages[i++ % messages.length];
+  noBtn.textContent = text;
+  msg.textContent = text;
+  msg.classList.add("show");
+}
 
-      message.textContent = messages[attempt % messages.length];
-      attempt++;
-    }
+document.addEventListener("mousemove", e => {
+  const r = noBtn.getBoundingClientRect();
+  if (
+    e.clientX > r.left - 10 &&
+    e.clientX < r.right + 10 &&
+    e.clientY > r.top - 10 &&
+    e.clientY < r.bottom + 10
+  ) {
+    moveNo();
+  }
+});
 
-    noBtn.addEventListener("mouseenter", moveNoButton);
-    noBtn.addEventListener("touchstart", moveNoButton);
+noBtn.addEventListener("touchstart", moveNo);
 
-    yesBtn.addEventListener("click", () => {
-      document.body.innerHTML = `
-        <div style="
-          height:100vh;
-          display:flex;
-          justify-content:center;
-          align-items:center;
-          flex-direction:column;
-          background:linear-gradient(135deg, #f6f1eb, #f2d7d9);
-          color:#c44569;
-          text-align:center;
-        ">
-          <h1 style="font-size:46px;">She said YES!!! 💖💍</h1>
-          <p style="font-size:22px;">I love you forever ❤️</p>
-        </div>
-      `;
-    });
-  </script>
+/* YES click */
+yesBtn.onclick = () => {
+  document.getElementById("mainContent").style.display = "none";
+
+  const yesScreen = document.createElement("div");
+  yesScreen.className = "yes-screen";
+  yesScreen.innerHTML = `
+    <div class="yes-bg"></div>
+    <div class="yes-content">
+      <h1>She said YES ❤️</h1>
+      <img src="https://images.pexels.com/photos/33440262/pexels-photo-33440262.jpeg" class="yes-photo" alt="Us">
+    </div>
+  `;
+  document.body.appendChild(yesScreen);
+};
+</script>
 
 </body>
 </html>
